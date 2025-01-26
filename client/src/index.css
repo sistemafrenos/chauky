@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "@radix-ui/colors/blue-dark.css";
+body {
+  background-color: #121113;
+  color: whitesmoke;
+}
+input {
+  background-color: #1f1f1f;
+  color: whitesmoke;
+  border-color: aliceblue;
+  border-radius: 5px;
+}
