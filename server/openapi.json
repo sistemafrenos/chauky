@@ -1,0 +1,362 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/": {
+            "get": {
+                "operationId": "AppController_getHello",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "App"
+                ]
+            }
+        },
+        "/Products": {
+            "get": {
+                "operationId": "ProductsController_getAllProducts",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Returns all Products"
+                    }
+                },
+                "summary": "Get all Products",
+                "tags": [
+                    "products"
+                ]
+            },
+            "post": {
+                "operationId": "ProductsController_createProduct",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateProductDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "The product has been successfully created"
+                    }
+                },
+                "summary": "Create a new product",
+                "tags": [
+                    "products"
+                ]
+            }
+        },
+        "/Products/{id}": {
+            "get": {
+                "operationId": "ProductsController_getProductById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "description": "Producto ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a Producto by ID"
+                    }
+                },
+                "summary": "Get a Producto by ID",
+                "tags": [
+                    "products"
+                ]
+            },
+            "put": {
+                "operationId": "ProductsController_updateProduct",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "description": "Product ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProductDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The product has been successfully updated"
+                    }
+                },
+                "summary": "Update a product",
+                "tags": [
+                    "products"
+                ]
+            },
+            "delete": {
+                "operationId": "ProductsController_deleteProduct",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "description": "Product ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The product has been successfully deleted"
+                    }
+                },
+                "summary": "Delete a product",
+                "tags": [
+                    "products"
+                ]
+            }
+        },
+        "/users": {
+            "get": {
+                "operationId": "UsersController_getAllUsers",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Returns all users"
+                    }
+                },
+                "summary": "Get all users",
+                "tags": [
+                    "users"
+                ]
+            },
+            "post": {
+                "operationId": "UsersController_createUser",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Returns the newly created user"
+                    }
+                },
+                "summary": "Create a new user",
+                "tags": [
+                    "users"
+                ]
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "operationId": "UsersController_getUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "description": "The ID of the user to retrieve",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a user by ID"
+                    }
+                },
+                "summary": "Get a user by ID",
+                "tags": [
+                    "users"
+                ]
+            },
+            "put": {
+                "operationId": "UsersController_updateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "description": "The ID of the user to update",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Returns the updated user"
+                    }
+                },
+                "summary": "Update a user by ID",
+                "tags": [
+                    "users"
+                ]
+            },
+            "delete": {
+                "operationId": "UsersController_deleteUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "description": "The ID of the user to delete",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Returns no content"
+                    }
+                },
+                "summary": "Delete a user by ID",
+                "tags": [
+                    "users"
+                ]
+            }
+        },
+        "/openapi": {
+            "get": {
+                "operationId": "OpenApiController_getOpenApiSpec",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "OpenApi"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "My NestJS API",
+        "description": "The API description",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [
+        {
+            "name": "products",
+            "description": ""
+        }
+    ],
+    "servers": [],
+    "components": {
+        "schemas": {
+            "CreateProductDto": {
+                "type": "object",
+                "properties": {
+                    "codigo": {
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "type": "string"
+                    },
+                    "precio": {
+                        "type": "number"
+                    },
+                    "imagen": {
+                        "type": "string"
+                    },
+                    "ubicacion": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "codigo",
+                    "precio"
+                ]
+            },
+            "UpdateProductDto": {
+                "type": "object",
+                "properties": {
+                    "codigo": {
+                        "type": "string"
+                    },
+                    "descripcion": {
+                        "type": "string"
+                    },
+                    "precio": {
+                        "type": "number"
+                    },
+                    "imagen": {
+                        "type": "string"
+                    },
+                    "ubicacion": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "codigo",
+                    "precio"
+                ]
+            },
+            "CreateUserDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "email"
+                ]
+            },
+            "UpdateUserDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
