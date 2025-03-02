@@ -10,3 +10,6 @@ input {
   border-color: aliceblue;
   border-radius: 5px;
 }
+.space-y-22 {
+  margin-top: 0.5rem;
+}
