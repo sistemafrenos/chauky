@@ -1,0 +1,23 @@
+services:
+  web:
+    build: ./client
+    ports:
+      -  "5173:5173"
+    depends_on:
+      - api
+    environment:
+      - CHOKIDAR_SKIP_SERVER_SETUP=true
+
+  api:
+    build: ./server
+    ports:
+      - "3000:3000"
+
+  barcodes:
+    build: ./generator
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
