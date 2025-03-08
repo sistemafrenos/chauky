@@ -8,6 +8,11 @@ export const getProducts = async () => {
   return response.data;
 };
 
+export const getProductById = async (id: string) => {
+  const response = await axios.get(`${API_URL}/${id}`);
+  return response.data;
+};
+
 export const createProduct = async (productData: any) => {
   const response = await axios.post(API_URL, {...productData, precio: Number(productData.precio)});
   return response.data;

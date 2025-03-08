@@ -139,7 +139,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
   const body = error ? String(error?.message ?? "") : props.children
 
   if (!body) {
-    return null
+    return <div className="text-sm" style={{ minHeight: "1.25rem"  }}>{''}</div>
   }
 
   return (

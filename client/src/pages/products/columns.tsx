@@ -7,6 +7,7 @@ import { Product } from "@/schemas/productSchema"
 import { Button } from "@radix-ui/themes";
 import { ColumnDef, FilterFn, Row } from "@tanstack/react-table"
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const customFilter: FilterFn<Product> = (row: Row<Product>, columnId: string, filterValue: string, addMeta: (meta?: any) => void) => {
   const values = filterValue.toLocaleLowerCase().split(" ");
@@ -103,11 +104,23 @@ export const columns: ColumnDef<Product>[] = [
     header: "",
     cell: ({ row }) => {
       return (
-        <DialogDemo product={row.original} />
+        <div className="flex justify-center gap-2">
+           <EditButton product={row.original} />
+           <DialogDemo product={row.original} />
+        </div>
       )
     }
   },
 ]
+
+const EditButton = ({ product }: { product: Product }) => {
+  const navigage = useNavigate();
+  return (
+    <Button variant="outline" onClick={() =>  navigage(`/products/${product.id}`)}>
+      Editar
+    </Button>
+  );
+}
 
 const handlePrintPdf = async (product: Product, quantity: number) => {
   const params: URLSearchParams = new URLSearchParams({
