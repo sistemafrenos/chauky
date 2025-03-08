@@ -36,10 +36,14 @@ def create_composite_image(barcode_images, rows=2, cols=5, empty_placeholders=8,
 @cross_origin()
 def generate_barcode():
     # Get the data from the query parameters
-    data = request.args.get('data')
-    barcode_type = request.args.get('type', 'ean13')
+    codigo = request.args.get('codigo')
+    descripcion = request.args.get('descripcion')
+    ubicacion = request.args.get('ubicacion')
+    quantity = int(request.args.get('quantity', 10))
+    barcode_type = request.args.get('type', 'code39')
+    quantity = int(request.args.get('quantity', 10))
 
-    if not data:
+    if not codigo:
         return jsonify({"error": "Data parameter is required"}), 400
 
     try:
@@ -48,13 +52,17 @@ def generate_barcode():
 
         # Generate 10 barcode images
         barcode_images = []
-        for _ in range(10):
-            barcode_obj = barcode_class(data, writer=ImageWriter())
+        descripcions = []
+        cols = 8  # Number of empty placeholders per row
+        img_width = 256  # Width of each barcode image
+        for _ in range(quantity):
+            barcode_obj = barcode_class(codigo, writer=ImageWriter())
             buffer = BytesIO()
             barcode_obj.write(buffer)
             buffer.seek(0)
             img = Image.open(buffer)
             barcode_images.append(img)
+            descripcions.append(descripcion)
 
         # Create a composite image with 8 empty placeholders followed by 10 barcodes
         composite_img = create_composite_image(barcode_images)
