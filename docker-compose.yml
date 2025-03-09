@@ -7,11 +7,15 @@ services:
       - api
     environment:
       - CHOKIDAR_SKIP_SERVER_SETUP=true
+    networks:
+      - mynetwork
 
   api:
     build: ./server
     ports:
       - "3000:3000"
+    networks:
+      - mynetwork
 
   barcodes:
     build: ./generator
@@ -21,3 +25,9 @@ services:
       - .:/app
     environment:
       - FLASK_ENV=development
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

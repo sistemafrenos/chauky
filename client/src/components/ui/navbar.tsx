@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import "./navbar.css";
 import { Link, NavLink } from "react-router-dom";
+import { ModeToggle } from "./mode-toogle";
 
 export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,6 +26,9 @@ export const Navbar = () => {
         </li>
         <li>
           <NavLink to="/info">Informacion</NavLink>
+        </li>
+        <li>
+          <ModeToggle />
         </li>
       </ul>
     </nav>
