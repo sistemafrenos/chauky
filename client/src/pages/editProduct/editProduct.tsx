@@ -59,14 +59,15 @@ const ProductForm = () => {
                 <F control={form.control} name="descripcion" label="Descripcion" />
                 <F control={form.control} name="ubicacion" label="Ubicacion" />
                 <F control={form.control} name="precio" label="Precio" type="number" />
-                <div className="col-span-2 flex justify-end mt-4">
+                <div className="col-span-2 flex justify-end mt-4 gap-4">
+                    <Button onClick={() => navigate('/')}>Cancelar</Button>
                     <Button type="submit" disabled={isLoading} onClick={() => {
                         const x = form.getValues();
                         const result = productSchema.safeParse(x);
                         console.log({error: result.error});
                         form.handleSubmit(onSubmit)()}
                     } >
-                        {isLoading ? 'Agregando...' : 'Agregar'}
+                        {isLoading ? 'guardando...' : 'Guardar'}
                     </Button>
                 </div>
             </FormProvider>

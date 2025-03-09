@@ -1,8 +1,12 @@
+import { deleteProduct } from "@/api/products";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SortedIcon } from "@/components/ui/dataTable";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { Product } from "@/schemas/productSchema"
 import { Button } from "@radix-ui/themes";
 import { ColumnDef, FilterFn, Row } from "@tanstack/react-table"
@@ -105,8 +109,9 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex justify-center gap-2">
-           <EditButton product={row.original} />
-           <DialogDemo product={row.original} />
+          <DeleteButton product={row.original} />
+          <EditButton product={row.original} />
+          <DialogDemo product={row.original} />
         </div>
       )
     }
@@ -116,17 +121,42 @@ export const columns: ColumnDef<Product>[] = [
 const EditButton = ({ product }: { product: Product }) => {
   const navigage = useNavigate();
   return (
-    <Button variant="outline" onClick={() =>  navigage(`/products/${product.id}`)}>
+    <Button variant="outline" onClick={() => navigage(`/products/${product.id}`)}>
       Editar
     </Button>
   );
 }
 
+const DeleteButton = ({ product }: { product: Product }) => {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger onClick={() => doDeleteProduct(product)} className={cn(buttonVariants({variant: "destructive", size: "sm" }))}>Eliminar</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-lg font-semibold text-red-500">Esta seguro de eliminar?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Esta accion es irreversible. 
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel className="text-sm font-medium text-gray-500">Cancelar</AlertDialogCancel>
+          <AlertDialogAction onClick={() => doDeleteProduct(product)} className={cn(buttonVariants({variant: "destructive", size: "sm" }))}>Continuar</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+const doDeleteProduct = async (product: Product) => {
+  await deleteProduct(String(product.id));
+  window.location.reload();
+}
+
 const handlePrintPdf = async (product: Product, quantity: number) => {
   const params: URLSearchParams = new URLSearchParams({
     codigo: product.codigo,
-    descripcion: product.descripcion ||'',
-    ubicacion: product.ubicacion ||'',
+    descripcion: product.descripcion || '',
+    ubicacion: product.ubicacion || '',
     type: 'code128',
     quantity: quantity.toString(),
   });
@@ -144,23 +174,26 @@ const handlePrintPdf = async (product: Product, quantity: number) => {
 };
 
 
-export function DialogDemo({ product } : {product:Product}) {
+export function DialogDemo({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState<number>(1);
+  const print = () => {
+    handlePrintPdf(product, quantity);
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Imprimir</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-reverse">
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Impimir etiquetas</DialogTitle>
+          <DialogTitle className="text-lg font-semibold text-gray-900">Impimir etiquetas</DialogTitle>
           <DialogDescription>
             Elija la cantidad de etiquetas que desea imprimir.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
+            <Label htmlFor="name" className="text-right text-gray-900">
               Cantidad
             </Label>
             <Input
@@ -173,8 +206,13 @@ export function DialogDemo({ product } : {product:Product}) {
             />
           </div>
         </div>
-        <DialogFooter>
-          <Button type="submit" onClick={()=> handlePrintPdf(product, quantity)}>Imprimir</Button>
+        <DialogFooter className="justify-end text-gray-900 flex gap-2" >
+           <DialogClose asChild>
+            <Button type="button" variant="classic" className="padding-2">
+               Cancelar
+            </Button>
+           </DialogClose>
+          <Button type="submit" onClick={print} variant="classic">Imprimir</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
