@@ -78,7 +78,7 @@ def generate_barcode():
             descriptions.append(descripcion)
 
         # Create a composite image with 8 empty placeholders followed by barcodes
-        composite_img = create_composite_image(barcode_images, descriptions)
+        composite_img = create_composite_image(barcode_images, descriptions, empty_placeholders=1)
 
         # Save the composite image to a BytesIO object
         buffer_with_composite = BytesIO()
