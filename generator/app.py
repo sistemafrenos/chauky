@@ -13,14 +13,14 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def resize_image(image, width, height):
     return image.resize((width, height), Image.LANCZOS)
 
-def create_composite_image(barcode_images, descriptions, rows=6, cols=6, empty_placeholders=8, barcode_width=100, barcode_height=75):
+def create_composite_image(barcode_images, descriptions, rows=6, cols=6, empty_placeholders=8, barcode_width=110, barcode_height=30, row_spacing=30):
     # Resize each barcode image
     barcode_images = [resize_image(img, barcode_width, barcode_height) for img in barcode_images]
 
     # Calculate the size of the composite image
     img_width, img_height = barcode_images[0].size
     composite_width = img_width * cols
-    composite_height = img_height * (rows + 1) + 40  # Add an extra row for empty placeholders and text
+    composite_height = img_height * (rows + 1) + row_spacing * (rows + 1) + 40  # Add extra space for rows and text
 
     # Create a new blank image for the composite
     composite_img = Image.new('RGB', (composite_width, composite_height), 'white')
@@ -35,7 +35,7 @@ def create_composite_image(barcode_images, descriptions, rows=6, cols=6, empty_p
     # Paste each barcode image into the composite image, starting after empty placeholders
     for i, (img, desc) in enumerate(zip(barcode_images, descriptions)):
         x = (i % cols) * img_width
-        y = (i // cols + 1) * img_height  # Start past the empty placeholders
+        y = (i // cols + 1) * (img_height + row_spacing)  # Start past the empty placeholders and add row spacing
         composite_img.paste(img, (x, y))
 
         # Add text below the barcode
@@ -43,7 +43,7 @@ def create_composite_image(barcode_images, descriptions, rows=6, cols=6, empty_p
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
         text_x = x + (img_width - text_width) / 2
-        text_y = y + img_height + 5
+        text_y = y + img_height
         draw.text((text_x, text_y), desc, font=font, fill='black')
 
     return composite_img
